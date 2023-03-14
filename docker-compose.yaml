@@ -1,0 +1,10 @@
+services:
+  php-symfony:
+    container_name: php-symfony
+    build:
+      context: ./.docker/php-symfony
+    tty: true
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/var/www/stadex-symfony
