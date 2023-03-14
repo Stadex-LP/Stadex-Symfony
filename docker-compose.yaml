@@ -3,8 +3,24 @@ services:
     container_name: php-symfony
     build:
       context: ./.docker/php-symfony
+    depends_on:
+      - postgres
+    links:
+      - postgres
     tty: true
     ports:
       - 8000:8000
     volumes:
       - .:/var/www/stadex-symfony
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
