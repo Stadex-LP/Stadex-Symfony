@@ -5,8 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ManifestationMaterielRepository;
+use App\State\ManifestationProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -15,8 +17,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['manifestationMateriel:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['manifestationMateriels:read']])]
 #[Post(
+    uriTemplate: '/manifestations/{id}/materiels',
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'manifestation',
+            fromClass: Manifestation::class,
+        )
+    ],
     normalizationContext: ['groups' => ['manifestationMateriel:read']],
-    denormalizationContext: ['groups' => ['manifestationMateriel:write']]
+    denormalizationContext: ['groups' => ['manifestationMateriel:write']],
+    read: false,
+    processor: ManifestationProcessor::class
 )]
 class ManifestationMateriel
 {
@@ -35,12 +46,12 @@ class ManifestationMateriel
     private ?int $qte = null;
 
     #[ORM\Column]
-    #[Groups(['manifestationMateriel:read','manifestationMateriels:read','manifestation:read', 'manifestationMateriel:write'])]
+    #[Groups(['manifestationMateriel:read','manifestationMateriels:read','manifestation:read'])]
     private ?float $prixUnitaireFact = null;
 
     #[ORM\ManyToOne(inversedBy: 'manifestationMateriels')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['manifestationMateriel:read','manifestationMateriels:read', 'manifestationMateriel:write'])]
+    #[Groups(['manifestationMateriel:read','manifestationMateriels:read'])]
     private ?Manifestation $manifestation = null;
 
     #[ORM\ManyToOne(inversedBy: 'manifestationMateriels')]
