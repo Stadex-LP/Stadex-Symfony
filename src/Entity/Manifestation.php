@@ -7,42 +7,57 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ManifestationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ManifestationRepository::class)]
 #[ApiResource]
-#[Get(normalizationContext: ['groups' => ['manisfestation:read']])]
-#[GetCollection(normalizationContext: ['groups' => ['manisfestations:read']])]
+#[Get(normalizationContext: ['groups' => ['manifestation:read']])]
+#[GetCollection(normalizationContext: ['groups' => ['manifestations:read']])]
+#[Post(
+    normalizationContext: ['groups' => ['manifestation:read']], 
+    denormalizationContext: ['groups' => ['manifestation:write']]
+)]
 class Manifestation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['manisfestation:read', 'manisfestations:read'])]
+    #[Groups(['manifestation:read', 'manifestations:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['manisfestation:read', 'manisfestations:read'])]
+    #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
     private ?string $denomination = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['manisfestation:read', 'manisfestations:read'])]
+    #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['manisfestation:read', 'manisfestations:read'])]
+    #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
     private ?\DateTimeInterface $dateFin = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['manisfestation:read', 'manisfestations:read'])]
+    #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
     private ?string $lieu = null;
 
     #[ORM\ManyToOne(inversedBy: 'manifestations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('manisfestation:read')]
+    #[Groups(['manifestation:read', 'manifestation:write'])]
     private ?Organisateur $organisateur = null;
+
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationMateriel::class)]
+    #[Groups(['manifestation:read'])]
+    private Collection $manifestationMateriels;
+
+    public function __construct()
+    {
+        $this->manifestationMateriels = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +120,36 @@ class Manifestation
     public function setOrganisateur(?Organisateur $organisateur): self
     {
         $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ManifestationMateriel>
+     */
+    public function getManifestationMateriels(): Collection
+    {
+        return $this->manifestationMateriels;
+    }
+
+    public function addManifestationMateriel(ManifestationMateriel $manifestationMateriel): self
+    {
+        if (!$this->manifestationMateriels->contains($manifestationMateriel)) {
+            $this->manifestationMateriels->add($manifestationMateriel);
+            $manifestationMateriel->setManifestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManifestationMateriel(ManifestationMateriel $manifestationMateriel): self
+    {
+        if ($this->manifestationMateriels->removeElement($manifestationMateriel)) {
+            // set the owning side to null (unless already changed)
+            if ($manifestationMateriel->getManifestation() === $this) {
+                $manifestationMateriel->setManifestation(null);
+            }
+        }
 
         return $this;
     }

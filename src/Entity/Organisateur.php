@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\OrganisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,20 +16,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 #[Get(normalizationContext: ['groups' => ['organisateur:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['organisateurs:read']])]
+#[Post(
+    normalizationContext: ['groups' => ['organisateur:read']],
+    denormalizationContext: ['groups' => ['organisateur:write']]
+)]
 class Organisateur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['organisateur:read','organisateurs:read','manisfestation:read'])]
+    #[Groups(['organisateur:read','organisateurs:read','manifestation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organisateur:read','organisateurs:read','manisfestation:read'])]
+    #[Groups(['organisateur:read','organisateurs:read','manifestation:read', 'organisateur:write'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organisateur:read','organisateurs:read','manisfestation:read'])]
+    #[Groups(['organisateur:read','organisateurs:read','manifestation:read', 'organisateur:write'])]
     private ?string $serviceDemandeur = null;
 
     #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Manifestation::class)]
