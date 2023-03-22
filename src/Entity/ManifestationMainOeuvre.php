@@ -3,30 +3,56 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ManifestationMainOeuvreRepository;
+use App\State\ManifestationMainOeuvreProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ManifestationMainOeuvreRepository::class)]
 #[ApiResource]
+#[Get(normalizationContext: ['groups' => ['manifestationMainOeuvre:read']])]
+#[GetCollection(normalizationContext: ['groups' => ['manifestationMainOeuvres:read']])]
+#[Post(
+    uriTemplate: '/manifestations/{id}/main_oeuvres',
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'manifestation',
+            fromClass: Manifestation::class,
+        )
+    ],
+    normalizationContext: ['groups' => ['manifestationMainOeuvre:read']],
+    denormalizationContext: ['groups' => ['manifestationMainOeuvre:write']],
+    read: false,
+    processor: ManifestationMainOeuvreProcessor::class
+)]
 class ManifestationMainOeuvre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['manifestationMainOeuvre:read','manifestationMainOeuvres:read','manifestation:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['manifestationMainOeuvre:read','manifestationMainOeuvres:read', 'manifestationMainOeuvre:write','manifestation:read'])]
     private ?int $heure = null;
 
     #[ORM\Column]
+    #[Groups(['manifestationMainOeuvre:read','manifestationMainOeuvres:read','manifestation:read'])]
     private ?float $prixHoraireFact = null;
 
     #[ORM\ManyToOne(inversedBy: 'manifestationMainOeuvres')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['manifestationMainOeuvre:read','manifestationMainOeuvres:read'])]
     private ?Manifestation $manifestation = null;
 
     #[ORM\ManyToOne(inversedBy: 'manifestationMainOeuvres')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['manifestationMainOeuvre:read','manifestationMainOeuvres:read', 'manifestationMainOeuvre:write','manifestation:read'])]
     private ?MainOeuvre $mainOeuvre = null;
 
     public function getId(): ?int
