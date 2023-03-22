@@ -2,23 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\TransportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TransportRepository::class)]
+#[ApiResource]
+#[Get(normalizationContext: ['groups' => ['transport:read']])]
+#[GetCollection(normalizationContext: ['groups' => ['transports:read']])]
+#[Post(
+    normalizationContext: ['groups' => ['transport:read']],
+    denormalizationContext: ['groups' => ['transport:write']]
+)]
 class Transport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['transport:read','transports:read', 'manifestation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['transport:read','transports:read', 'transport:write', 'manifestation:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column]
+    #[Groups(['transport:read','transports:read', 'transport:write', 'manifestation:read'])]
     private ?float $prixHoraire = null;
 
     #[ORM\OneToMany(mappedBy: 'transport', targetEntity: ManifestationTransport::class)]

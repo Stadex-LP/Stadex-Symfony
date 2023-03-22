@@ -55,6 +55,7 @@ class Manifestation
     private Collection $manifestationMateriels;
 
     #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class)]
+    #[Groups(['manifestation:read'])]
     private Collection $manifestationTransports;
 
     public function __construct()

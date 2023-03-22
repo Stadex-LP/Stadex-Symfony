@@ -8,7 +8,7 @@ use App\Entity\Manifestation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ManifestationProcessor implements ProcessorInterface
+class ManifestationTransportProcessor implements ProcessorInterface
 {
     public function __construct(private EntityManagerInterface $entityManager, private ProcessorInterface $persistProcessor)
     {
@@ -23,7 +23,7 @@ class ManifestationProcessor implements ProcessorInterface
         }
 
         $data->setManifestation($manifestation);
-        $data->setPrixUnitaireFact($data->getMateriel()->getPrixUnitaire());
+        $data->setPrixHoraireFact($data->getTransport()->getPrixHoraire());
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }

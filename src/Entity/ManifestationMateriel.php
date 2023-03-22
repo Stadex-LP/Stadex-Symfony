@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ManifestationMaterielRepository;
-use App\State\ManifestationProcessor;
+use App\State\ManifestationMaterielProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['manifestationMateriel:read']],
     denormalizationContext: ['groups' => ['manifestationMateriel:write']],
     read: false,
-    processor: ManifestationProcessor::class
+    processor: ManifestationMaterielProcessor::class
 )]
 class ManifestationMateriel
 {

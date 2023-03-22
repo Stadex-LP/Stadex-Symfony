@@ -23,6 +23,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\State\ManifestationProcessor:
+    App\State\ManifestationMaterielProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\State\ManifestationTransportProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
