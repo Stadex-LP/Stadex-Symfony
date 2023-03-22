@@ -54,9 +54,13 @@ class Manifestation
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMateriels;
 
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class)]
+    private Collection $manifestationTransports;
+
     public function __construct()
     {
         $this->manifestationMateriels = new ArrayCollection();
+        $this->manifestationTransports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +152,36 @@ class Manifestation
             // set the owning side to null (unless already changed)
             if ($manifestationMateriel->getManifestation() === $this) {
                 $manifestationMateriel->setManifestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ManifestationTransport>
+     */
+    public function getManifestationTransports(): Collection
+    {
+        return $this->manifestationTransports;
+    }
+
+    public function addManifestationTransport(ManifestationTransport $manifestationTransport): self
+    {
+        if (!$this->manifestationTransports->contains($manifestationTransport)) {
+            $this->manifestationTransports->add($manifestationTransport);
+            $manifestationTransport->setManifestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManifestationTransport(ManifestationTransport $manifestationTransport): self
+    {
+        if ($this->manifestationTransports->removeElement($manifestationTransport)) {
+            // set the owning side to null (unless already changed)
+            if ($manifestationTransport->getManifestation() === $this) {
+                $manifestationTransport->setManifestation(null);
             }
         }
 
