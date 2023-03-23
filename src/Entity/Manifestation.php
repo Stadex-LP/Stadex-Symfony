@@ -62,11 +62,15 @@ class Manifestation
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMainOeuvres;
 
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class)]
+    private Collection $manifestationEquipementSportifs;
+
     public function __construct()
     {
         $this->manifestationMateriels = new ArrayCollection();
         $this->manifestationTransports = new ArrayCollection();
         $this->manifestationMainOeuvres = new ArrayCollection();
+        $this->manifestationEquipementSportifs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,6 +222,36 @@ class Manifestation
             // set the owning side to null (unless already changed)
             if ($manifestationMainOeuvre->getManifestation() === $this) {
                 $manifestationMainOeuvre->setManifestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ManifestationEquipementSportif>
+     */
+    public function getManifestationEquipementSportifs(): Collection
+    {
+        return $this->manifestationEquipementSportifs;
+    }
+
+    public function addManifestationEquipementSportif(ManifestationEquipementSportif $manifestationEquipementSportif): self
+    {
+        if (!$this->manifestationEquipementSportifs->contains($manifestationEquipementSportif)) {
+            $this->manifestationEquipementSportifs->add($manifestationEquipementSportif);
+            $manifestationEquipementSportif->setManifestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeManifestationEquipementSportif(ManifestationEquipementSportif $manifestationEquipementSportif): self
+    {
+        if ($this->manifestationEquipementSportifs->removeElement($manifestationEquipementSportif)) {
+            // set the owning side to null (unless already changed)
+            if ($manifestationEquipementSportif->getManifestation() === $this) {
+                $manifestationEquipementSportif->setManifestation(null);
             }
         }
 
