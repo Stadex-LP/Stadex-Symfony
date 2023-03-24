@@ -32,3 +32,6 @@ services:
     App\State\ManifestationMainOeuvreProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\State\ManifestationEquipementSportifProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
