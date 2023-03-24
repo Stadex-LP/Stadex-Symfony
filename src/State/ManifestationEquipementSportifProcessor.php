@@ -8,12 +8,11 @@ use App\Entity\Manifestation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ManifestationMainOeuvreProcessor implements ProcessorInterface
+class ManifestationEquipementSportifProcessor implements ProcessorInterface
 {
     public function __construct(private EntityManagerInterface $entityManager, private ProcessorInterface $persistProcessor)
     {
     }
-
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         $manifestation = $this->entityManager->getRepository(Manifestation::class)->find($uriVariables['id']);
@@ -23,7 +22,7 @@ class ManifestationMainOeuvreProcessor implements ProcessorInterface
         }
 
         $data->setManifestation($manifestation);
-        $data->setPrixHoraireFact($data->getMainOeuvre()->getPrixHoraire());
+        $data->setPrixHoraireFact($data->getEquipementSportif()->getPrixHoraire());
 
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }

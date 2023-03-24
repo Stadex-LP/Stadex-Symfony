@@ -3,28 +3,42 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\EquipementSportifRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EquipementSportifRepository::class)]
 #[ApiResource]
+#[Get(normalizationContext: ['groups' => ['equipementSportif:read']])]
+#[GetCollection(normalizationContext: ['groups' => ['equipementSportifs:read']])]
+#[Post(
+    normalizationContext: ['groups' => ['equipementSportif:read']],
+    denormalizationContext: ['groups' => ['equipementSportif:write']]
+)]
 class EquipementSportif
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['equipementSportif:read','equipementSportifs:read','manifestation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['equipementSportif:read','equipementSportifs:read','manifestation:read','equipementSportif:write'])]
     private ?string $libelle = null;
 
     #[ORM\Column]
+    #[Groups(['equipementSportif:read','equipementSportifs:read','manifestation:read','equipementSportif:write'])]
     private ?float $prixHoraire = null;
 
     #[ORM\Column]
-    private ?int $codePlanitec = null;
+    #[Groups(['equipementSportif:read','equipementSportifs:read','manifestation:read','equipementSportif:write'])]
+    private ?string $codePlanitec = null;
 
     #[ORM\OneToMany(mappedBy: 'equipementSportif', targetEntity: ManifestationEquipementSportif::class)]
     private Collection $manifestationEquipementSportifs;
@@ -63,12 +77,12 @@ class EquipementSportif
         return $this;
     }
 
-    public function getCodePlanitec(): ?int
+    public function getCodePlanitec(): ?string
     {
         return $this->codePlanitec;
     }
 
-    public function setCodePlanitec(int $codePlanitec): self
+    public function setCodePlanitec(string $codePlanitec): self
     {
         $this->codePlanitec = $codePlanitec;
 

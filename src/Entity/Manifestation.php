@@ -63,6 +63,7 @@ class Manifestation
     private Collection $manifestationMainOeuvres;
 
     #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class)]
+    #[Groups(['manifestation:read'])]
     private Collection $manifestationEquipementSportifs;
 
     public function __construct()
