@@ -1,0 +1,36 @@
+services:
+  php-prod:
+    build:
+      context: .
+      target: php-prod
+    tty: true
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    volumes:
+      - php_socket:/var/run/php
+
+  nginx-prod:
+    build:
+      context: .
+      target: nginx-prod
+    depends_on:
+      - php-prod
+    ports:
+      - "80:80"
+    volumes:
+      - php_socket:/var/run/php
+
+  postgres:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+volumes:
+  database-data:
+  php_socket:
