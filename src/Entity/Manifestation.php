@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ManifestationRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['manifestation:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['manifestations:read']])]
 #[Post(
-    normalizationContext: ['groups' => ['manifestation:read']], 
+    normalizationContext: ['groups' => ['manifestation:read']],
     denormalizationContext: ['groups' => ['manifestation:write']]
 )]
 class Manifestation
@@ -35,11 +36,11 @@ class Manifestation
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
-    private ?\DateTimeInterface $dateDebut = null;
+    private ?DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
-    private ?\DateTimeInterface $dateFin = null;
+    private ?DateTimeInterface $dateFin = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['manifestation:read', 'manifestations:read', 'manifestation:write'])]
@@ -91,24 +92,24 @@ class Manifestation
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
+    public function getDateDebut(): ?DateTimeInterface
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(\DateTimeInterface $dateDebut): self
+    public function setDateDebut(DateTimeInterface $dateDebut): self
     {
         $this->dateDebut = $dateDebut;
 
         return $this;
     }
 
-    public function getDateFin(): ?\DateTimeInterface
+    public function getDateFin(): ?DateTimeInterface
     {
         return $this->dateFin;
     }
 
-    public function setDateFin(\DateTimeInterface $dateFin): self
+    public function setDateFin(DateTimeInterface $dateFin): self
     {
         $this->dateFin = $dateFin;
 
@@ -257,5 +258,43 @@ class Manifestation
         }
 
         return $this;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalHT(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMateriels as $manifestationMateriel) {
+            $prixTotal += $manifestationMateriel->getPrixTotalHTMateriel();
+        }
+        foreach ($this->manifestationTransports as $manifestationTransport) {
+            $prixTotal += $manifestationTransport->getPrixTotalHTTransport();
+        }
+        foreach ($this->manifestationMainOeuvres as $manifestationMainOeuvre) {
+            $prixTotal += $manifestationMainOeuvre->getPrixTotalHTMainOeuvre();
+        }
+       foreach ($this->manifestationEquipementSportifs as $manifestationEquipementSportif) {
+           $prixTotal += $manifestationEquipementSportif->getPrixTotalHTEquipementSportif();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalTTC(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMateriels as $manifestationMateriel) {
+            $prixTotal += $manifestationMateriel->getPrixTotalTTCMateriel();
+        }
+        foreach ($this->manifestationTransports as $manifestationTransport) {
+            $prixTotal += $manifestationTransport->getPrixTotalTTCTransport();
+        }
+        foreach ($this->manifestationMainOeuvres as $manifestationMainOeuvre) {
+            $prixTotal += $manifestationMainOeuvre->getPrixTotalTTCMainOeuvre();
+        }
+        foreach ($this->manifestationEquipementSportifs as $manifestationEquipementSportif) {
+            $prixTotal += $manifestationEquipementSportif->getPrixTotalTTCEquipementSportif();
+        }
+        return $prixTotal;
     }
 }

@@ -107,4 +107,15 @@ class ManifestationTransport
 
         return $this;
     }
+
+    public function getPrixTotalHTTransport():float
+    {
+        return $this->prixHoraireFact * $this->heure;
+
+    }
+
+    public function getPrixTotalTTCTransport():float
+    {
+        return $this->getPrixTotalHTTransport() * 1.2;
+    }
 }

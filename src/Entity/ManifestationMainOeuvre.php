@@ -107,4 +107,14 @@ class ManifestationMainOeuvre
 
         return $this;
     }
+
+    public function getPrixTotalHTMainOeuvre():float
+    {
+        return $this->heure * $this->prixHoraireFact;
+    }
+
+    public function getPrixTotalTTCMainOeuvre():float
+    {
+        return $this->getPrixTotalHTMainOeuvre() * 1.2;
+    }
 }

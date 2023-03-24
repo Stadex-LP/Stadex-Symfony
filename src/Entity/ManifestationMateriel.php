@@ -123,4 +123,17 @@ class ManifestationMateriel
 
         return $this;
     }
+
+    public function getPrixTotalHTMateriel():float
+    {
+        if($this->materiel->isEstParJour()){
+            return $this->qte * $this->prixUnitaireFact * $this->jour;
+        }
+        return $this->qte * $this->prixUnitaireFact;
+    }
+
+    public function getPrixTotalTTCMateriel():float
+    {
+        return $this->getPrixTotalHTMateriel() * 1.2;
+    }
 }
