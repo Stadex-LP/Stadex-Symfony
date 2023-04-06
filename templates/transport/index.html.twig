@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transports{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Transports</h1>
+        <div class="container p-0 m-0">
+            <div class="row justify-content-end p-0 m-0">
+                <div class="col-auto me-0 pe-0">
+                    <a class="btn btn-success" href="{{ path('app_transport_new') }}">Nouveau</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Libelle</th>
+                <th>Prix Horaire</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transport in transports %}
+            <tr>
+                <td>{{ transport.id }}</td>
+                <td>{{ transport.libelle }}</td>
+                <td>{{ transport.prixHoraire }}</td>
+                <td>
+                    <a class="btn btn-outline-primary"
+                       href="{{ path('app_transport_show', {'id': transport.id}) }}">Afficher</a>
+                    <a class="btn btn-outline-warning"
+                       href="{{ path('app_transport_edit', {'id': transport.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun Transport</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
