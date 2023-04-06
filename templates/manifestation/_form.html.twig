@@ -1,4 +1,80 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.denomination) }}
+    {{ form_row(form.dateDebut) }}
+    {{ form_row(form.dateFin) }}
+    {{ form_row(form.lieu) }}
+    {{ form_row(form.organisateur) }}
+    <ul class="nav nav-tabs pt-3 mb-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Matériels</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Équipements Sportif</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Transports</button>
+        </li>
+    </ul>
+    <div class="tab-content mb-3" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class="manifestation-materiels"
+                 data-index="{{ form.manifestationMateriels|length > 0 ? form.manifestationMateriels|last.vars.name + 1 : 0 }}"
+                 data-prototype="{{ form_widget(form.manifestationMateriels.vars.prototype, {'attr': {'class': 'row manifestation-materiel'} })|e('html_attr') }}">
+                {% for manifestationMateriel in form.manifestationMateriels %}
+                    {{ form_widget(manifestationMateriel, {'attr': {'class': 'row manifestation-materiel'} }) }}
+                {% endfor %}
+            </div>
+            <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="manifestation-materiels">Ajouter</button>
+        </div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+    </div>
+
     <button class="btn btn-primary">{{ button_label|default('Créer') }}</button>
+
+    <script>
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+            const item = document.createElement('div');
+
+            item.innerHTML = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+
+            collectionHolder.appendChild(item);
+
+            collectionHolder.dataset.index++;
+            addTagFormDeleteLink(item.firstChild);
+        };
+
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.innerHTML = '<i class="bi bi-trash-fill"></i>'
+            removeFormButton.classList.add('btn', 'btn-danger', 'col-1', 'mb-3', 'mt-4');
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                item.remove();
+            });
+        };
+
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+
+        document
+            .querySelectorAll('div.manifestation-materiels div.manifestation-materiel')
+            .forEach((manifestationMateriel) => {
+                addTagFormDeleteLink(manifestationMateriel)
+            });
+    </script>
 {{ form_end(form) }}

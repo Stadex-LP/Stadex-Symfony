@@ -29,6 +29,12 @@ class ManifestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set the price of the Materiel
+            $manifestation->getManifestationMateriels()->forAll(function ($key, $manifestationMateriel) {
+                $manifestationMateriel->setPrixUnitaireFact($manifestationMateriel->getMateriel()->getPrixUnitaire());
+
+                return true;
+            });
             $manifestationRepository->save($manifestation, true);
 
             return $this->redirectToRoute('app_manifestation_index', [], Response::HTTP_SEE_OTHER);
@@ -55,6 +61,12 @@ class ManifestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Set the price of the Materiel
+            $manifestation->getManifestationMateriels()->forAll(function ($key, $manifestationMateriel) {
+                $manifestationMateriel->setPrixUnitaireFact($manifestationMateriel->getMateriel()->getPrixUnitaire());
+
+                return true;
+            });
             $manifestationRepository->save($manifestation, true);
 
             return $this->redirectToRoute('app_manifestation_index', [], Response::HTTP_SEE_OTHER);

@@ -51,7 +51,7 @@ class Manifestation
     #[Groups(['manifestation:read', 'manifestation:write'])]
     private ?Organisateur $organisateur = null;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationMateriel::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationMateriel::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMateriels;
 
@@ -297,4 +297,11 @@ class Manifestation
         }
         return $prixTotal;
     }
+
+    public function __toString(): string
+    {
+        return $this->denomination;
+    }
+
+
 }
