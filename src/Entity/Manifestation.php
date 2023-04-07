@@ -55,7 +55,7 @@ class Manifestation
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMateriels;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationTransports;
 

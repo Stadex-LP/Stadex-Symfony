@@ -36,7 +36,16 @@
             </div>
             <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="manifestation-equipement-sportifs">Ajouter</button>
         </div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <div class="manifestation-transports"
+                 data-index="{{ form.manifestationTransports|length > 0 ? form.manifestationTransports|last.vars.name + 1 : 0 }}"
+                 data-prototype="{{ form_widget(form.manifestationTransports.vars.prototype, {'attr': {'class': 'row manifestation-transport'} })|e('html_attr') }}">
+                {% for manifestationTransport in form.manifestationTransports %}
+                    {{ form_widget(manifestationTransport, {'attr': {'class': 'row manifestation-transport'} }) }}
+                {% endfor %}
+            </div>
+            <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="manifestation-transports">Ajouter</button>
+        </div>
     </div>
 
     <button class="btn btn-primary">{{ button_label|default('Créer') }}</button>

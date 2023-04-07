@@ -37,6 +37,13 @@ class ManifestationType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
+            ->add('manifestationTransports', CollectionType::class, [
+                'entry_type' => ManifestationTransportType::class,
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
     }
 

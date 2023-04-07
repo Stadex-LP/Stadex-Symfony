@@ -29,16 +29,22 @@ class ManifestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set the price of the Materiel
+            // Set the price of the Materiels
             $manifestation->getManifestationMateriels()->forAll(function ($key, $manifestationMateriel) {
                 $manifestationMateriel->setPrixUnitaireFact($manifestationMateriel->getMateriel()->getPrixUnitaire());
 
                 return true;
             });
 
-            //Set the price of the Equipement
+            //Set the price of the Equipements
             $manifestation->getManifestationEquipementSportifs()->forAll(function ($key, $manifestationEquipementSportif) {
                 $manifestationEquipementSportif->setPrixHoraireFact($manifestationEquipementSportif->getEquipementSportif()->getPrixHoraire());
+                return true;
+            });
+
+            //Set the price of the Transports
+            $manifestation->getManifestationTransports()->forAll(function ($key, $manifestationTransport) {
+                $manifestationTransport->setPrixHoraireFact($manifestationTransport->getTransport()->getPrixHoraire());
                 return true;
             });
 
@@ -78,6 +84,12 @@ class ManifestationController extends AbstractController
             //Set the price of the Equipement
             $manifestation->getManifestationEquipementSportifs()->forAll(function ($key, $manifestationEquipementSportif) {
                 $manifestationEquipementSportif->setPrixHoraireFact($manifestationEquipementSportif->getEquipementSportif()->getPrixHoraire());
+                return true;
+            });
+
+            //Set the price of the Transports
+            $manifestation->getManifestationTransports()->forAll(function ($key, $manifestationTransport) {
+                $manifestationTransport->setPrixHoraireFact($manifestationTransport->getTransport()->getPrixHoraire());
                 return true;
             });
 
