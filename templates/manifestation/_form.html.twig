@@ -6,17 +6,17 @@
     {{ form_row(form.organisateur) }}
     <ul class="nav nav-tabs pt-3 mb-3" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Matériels</button>
+            <button class="nav-link active" id="materiels-tab" data-bs-toggle="tab" data-bs-target="#materiels-tab-pane" type="button" role="tab" aria-controls="materiels-tab-pane" aria-selected="true">Matériels</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Équipements Sportif</button>
+            <button class="nav-link" id="equipements-sportif-tab" data-bs-toggle="tab" data-bs-target="#equipements-sportif-tab-pane" type="button" role="tab" aria-controls="equipements-sportif-tab-pane" aria-selected="false">Équipements Sportif</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Transports</button>
+            <button class="nav-link" id="transports-tab" data-bs-toggle="tab" data-bs-target="#transports-tab-pane" type="button" role="tab" aria-controls="transports-tab-pane" aria-selected="false">Transports</button>
         </li>
     </ul>
     <div class="tab-content mb-3" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="materiels-tab-pane" role="tabpanel" aria-labelledby="materiels-tab" tabindex="0">
             <div class="manifestation-materiels"
                  data-index="{{ form.manifestationMateriels|length > 0 ? form.manifestationMateriels|last.vars.name + 1 : 0 }}"
                  data-prototype="{{ form_widget(form.manifestationMateriels.vars.prototype, {'attr': {'class': 'row manifestation-materiel'} })|e('html_attr') }}">
@@ -26,7 +26,7 @@
             </div>
             <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="manifestation-materiels">Ajouter</button>
         </div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <div class="tab-pane fade" id="equipements-sportif-tab-pane" role="tabpanel" aria-labelledby="equipements-sportif-tab" tabindex="0">
             <div class="manifestation-equipement-sportifs"
                  data-index="{{ form.manifestationEquipementSportifs|length > 0 ? form.manifestationEquipementSportifs|last.vars.name + 1 : 0 }}"
                  data-prototype="{{ form_widget(form.manifestationEquipementSportifs.vars.prototype, {'attr': {'class': 'row manifestation-equipement-sportif'} })|e('html_attr') }}">
@@ -36,7 +36,7 @@
             </div>
             <button type="button" class="add_item_link btn btn-outline-success" data-collection-holder-class="manifestation-equipement-sportifs">Ajouter</button>
         </div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <div class="tab-pane fade" id="transports-tab-pane" role="tabpanel" aria-labelledby="transports-tab" tabindex="0">
             <div class="manifestation-transports"
                  data-index="{{ form.manifestationTransports|length > 0 ? form.manifestationTransports|last.vars.name + 1 : 0 }}"
                  data-prototype="{{ form_widget(form.manifestationTransports.vars.prototype, {'attr': {'class': 'row manifestation-transport'} })|e('html_attr') }}">
