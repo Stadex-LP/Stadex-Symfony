@@ -35,6 +35,13 @@ class ManifestationController extends AbstractController
 
                 return true;
             });
+
+            //Set the price of the Equipement
+            $manifestation->getManifestationEquipementSportifs()->forAll(function ($key, $manifestationEquipementSportif) {
+                $manifestationEquipementSportif->setPrixHoraireFact($manifestationEquipementSportif->getEquipementSportif()->getPrixHoraire());
+                return true;
+            });
+
             $manifestationRepository->save($manifestation, true);
 
             return $this->redirectToRoute('app_manifestation_index', [], Response::HTTP_SEE_OTHER);
@@ -67,6 +74,13 @@ class ManifestationController extends AbstractController
 
                 return true;
             });
+
+            //Set the price of the Equipement
+            $manifestation->getManifestationEquipementSportifs()->forAll(function ($key, $manifestationEquipementSportif) {
+                $manifestationEquipementSportif->setPrixHoraireFact($manifestationEquipementSportif->getEquipementSportif()->getPrixHoraire());
+                return true;
+            });
+
             $manifestationRepository->save($manifestation, true);
 
             return $this->redirectToRoute('app_manifestation_index', [], Response::HTTP_SEE_OTHER);

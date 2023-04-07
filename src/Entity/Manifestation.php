@@ -63,7 +63,7 @@ class Manifestation
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMainOeuvres;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationEquipementSportifs;
 

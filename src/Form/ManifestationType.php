@@ -30,6 +30,13 @@ class ManifestationType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
+            ->add('manifestationEquipementSportifs', CollectionType::class, [
+                'entry_type' => ManifestationEquipementSportifType::class,
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
     }
 
