@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipements Sportif{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Équipements Sportif</h1>
+        <div class="container p-0 m-0">
+            <div class="row justify-content-end p-0 m-0">
+                <div class="col-auto me-0 pe-0">
+                    <a class="btn btn-success" href="{{ path('app_equipement_sportif_new') }}">Nouveau</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Libelle</th>
+                <th>Prix Horaire</th>
+                <th>Code Planitec</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for equipement_sportif in equipement_sportifs %}
+            <tr>
+                <td>{{ equipement_sportif.id }}</td>
+                <td>{{ equipement_sportif.libelle }}</td>
+                <td>{{ equipement_sportif.prixHoraire }}</td>
+                <td>{{ equipement_sportif.codePlanitec }}</td>
+                <td>
+                    <a class="btn btn-outline-primary"
+                       href="{{ path('app_equipement_sportif_show', {'id': equipement_sportif.id}) }}">Afficher</a>
+                    <a class="btn btn-outline-warning"
+                       href="{{ path('app_equipement_sportif_edit', {'id': equipement_sportif.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun Équipement Sportif</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -51,11 +51,11 @@ class Manifestation
     #[Groups(['manifestation:read', 'manifestation:write'])]
     private ?Organisateur $organisateur = null;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationMateriel::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationMateriel::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMateriels;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationTransport::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationTransports;
 
@@ -63,7 +63,7 @@ class Manifestation
     #[Groups(['manifestation:read'])]
     private Collection $manifestationMainOeuvres;
 
-    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class)]
+    #[ORM\OneToMany(mappedBy: 'manifestation', targetEntity: ManifestationEquipementSportif::class, cascade: ['persist', 'remove'])]
     #[Groups(['manifestation:read'])]
     private Collection $manifestationEquipementSportifs;
 
@@ -297,4 +297,11 @@ class Manifestation
         }
         return $prixTotal;
     }
+
+    public function __toString(): string
+    {
+        return $this->denomination;
+    }
+
+
 }

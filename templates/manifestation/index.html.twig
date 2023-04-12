@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manifestations{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Manifestations</h1>
+        <div class="container p-0 m-0">
+            <div class="row justify-content-end p-0 m-0">
+                <div class="col-auto me-0 pe-0">
+                    <a class="btn btn-success" href="{{ path('app_manifestation_new') }}">Nouveau</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Dénomination</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Lieu</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for manifestation in manifestations %}
+            <tr>
+                <td>{{ manifestation.id }}</td>
+                <td>{{ manifestation.denomination }}</td>
+                <td>{{ manifestation.dateDebut ? manifestation.dateDebut|date('d-m-Y H:i') : '' }}</td>
+                <td>{{ manifestation.dateFin ? manifestation.dateFin|date('d-m-Y H:i') : '' }}</td>
+                <td>{{ manifestation.lieu }}</td>
+                <td>
+                    <a class="btn btn-outline-primary"
+                       href="{{ path('app_manifestation_show', {'id': manifestation.id}) }}">Afficher</a>
+                    <a class="btn btn-outline-warning"
+                       href="{{ path('app_manifestation_edit', {'id': manifestation.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucune Manifestation</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
