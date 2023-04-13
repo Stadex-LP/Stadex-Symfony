@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
@@ -20,6 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['equipementSportif:read']],
     denormalizationContext: ['groups' => ['equipementSportif:write']]
 )]
+#[Delete]
 class EquipementSportif
 {
     #[ORM\Id]

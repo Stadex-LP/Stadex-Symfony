@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -29,6 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     read: false,
     processor: ManifestationMaterielProcessor::class
 )]
+#[Delete]
 class ManifestationMateriel
 {
     #[ORM\Id]
