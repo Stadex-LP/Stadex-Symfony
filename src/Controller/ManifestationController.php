@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Manifestation;
 use App\Form\ManifestationType;
 use App\Repository\ManifestationRepository;
+use App\Service\CsvExportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class ManifestationController extends AbstractController
 {
     #[Route('/', name: 'app_manifestation_index', methods: ['GET'])]
-    public function index(ManifestationRepository $manifestationRepository): Response
+    public function index(ManifestationRepository $manifestationRepository,Request $request,CsvExportService $csvService): Response
     {
+        $manifestations = $manifestationRepository->findAll();
+
+        if ($request->query->get('export') == 'csv') {
+            $response = new Response();
+            $response->headers->set('Content-type', 'text/csv');
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . "manifestation.csv" . '";');
+            $response->sendHeaders();
+
+            $response->setContent($csvService->exportManifestationsToCsv($manifestations));
+
+            return $response;
+        }
+
         return $this->render('manifestation/index.html.twig', [
-            'manifestations' => $manifestationRepository->findAll(),
+            'manifestations' => $manifestations,
         ]);
     }
 
