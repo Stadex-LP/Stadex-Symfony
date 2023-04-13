@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EquipementSportif;
 use App\Form\EquipementSportifType;
 use App\Repository\EquipementSportifRepository;
+use App\Service\CsvExportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class EquipementSportifController extends AbstractController
 {
     #[Route('/', name: 'app_equipement_sportif_index', methods: ['GET'])]
-    public function index(EquipementSportifRepository $equipementSportifRepository): Response
+    public function index(EquipementSportifRepository $equipementSportifRepository,Request $request,CsvExportService $csvService): Response
     {
+
+        $equipements = $equipementSportifRepository->findAll();
+
+        if ($request->query->get('export') == 'csv') {
+            $response = new Response();
+            $response->headers->set('Content-type', 'text/csv');
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . "equipement.csv" . '";');
+            $response->sendHeaders();
+
+            $response->setContent($csvService->exportEquipementSportifsToCsv($equipements));
+
+            return $response;
+        }
         return $this->render('equipement_sportif/index.html.twig', [
-            'equipement_sportifs' => $equipementSportifRepository->findAll(),
+            'equipement_sportifs' => $equipements,
         ]);
     }
 
