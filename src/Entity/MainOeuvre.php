@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\MainOeuvreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,6 +23,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => ['mainOeuvre:write']]
 )]
 #[Delete]
+#[Patch(
+    normalizationContext: ['groups' => ['mainOeuvre:read']],
+    denormalizationContext: ['groups' => ['mainOeuvre:write']]
+)]
 class MainOeuvre
 {
     #[ORM\Id]
