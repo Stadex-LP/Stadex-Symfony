@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\TransportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['transport:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['transports:read']])]
 #[Post(
+    normalizationContext: ['groups' => ['transport:read']],
+    denormalizationContext: ['groups' => ['transport:write']]
+)]
+#[Patch(
     normalizationContext: ['groups' => ['transport:read']],
     denormalizationContext: ['groups' => ['transport:write']]
 )]
