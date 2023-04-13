@@ -5,19 +5,38 @@ namespace App\Controller;
 use App\Entity\Materiel;
 use App\Form\MaterielType;
 use App\Repository\MaterielRepository;
+use App\Service\CsvExportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 #[Route('/materiel')]
 class MaterielController extends AbstractController
 {
     #[Route('/', name: 'app_materiel_index', methods: ['GET'])]
-    public function index(MaterielRepository $materielRepository): Response
+    public function index(MaterielRepository $materielRepository, Request $request, CsvExportService $csvService): Response
     {
+        $materiels = $materielRepository->findAll();
+
+        if ($request->query->get('export') == 'csv') {
+            $response = new Response();
+            $response->headers->set('Content-type', 'text/csv');
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . "materiel.csv" . '";');
+            $response->sendHeaders();
+
+            $response->setContent($csvService->exportMaterielsToCsv($materiels));
+
+            return $response;
+        }
+
         return $this->render('materiel/index.html.twig', [
-            'materiels' => $materielRepository->findAll(),
+            'materiels' => $materiels,
         ]);
     }
 
