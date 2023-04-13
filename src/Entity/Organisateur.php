@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\OrganisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['organisateur:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['organisateurs:read']])]
 #[Post(
+    normalizationContext: ['groups' => ['organisateur:read']],
+    denormalizationContext: ['groups' => ['organisateur:write']]
+)]
+#[Patch(
     normalizationContext: ['groups' => ['organisateur:read']],
     denormalizationContext: ['groups' => ['organisateur:write']]
 )]
