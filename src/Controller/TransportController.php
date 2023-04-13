@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Transport;
 use App\Form\TransportType;
 use App\Repository\TransportRepository;
+use App\Service\CsvExportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class TransportController extends AbstractController
 {
     #[Route('/', name: 'app_transport_index', methods: ['GET'])]
-    public function index(TransportRepository $transportRepository): Response
+    public function index(TransportRepository $transportRepository,Request $request,CsvExportService $csvService): Response
     {
+        $transports = $transportRepository->findAll();
+
+        if ($request->query->get('export') == 'csv') {
+            $response = new Response();
+            $response->headers->set('Content-type', 'text/csv');
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . "transport.csv" . '";');
+            $response->sendHeaders();
+
+            $response->setContent($csvService->exportTransportsToCsv($transports));
+
+            return $response;
+        }
+
         return $this->render('transport/index.html.twig', [
-            'transports' => $transportRepository->findAll(),
+            'transports' => $transports,
         ]);
     }
 
