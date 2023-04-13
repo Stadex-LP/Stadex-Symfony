@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Organisateur;
 use App\Form\OrganisateurType;
 use App\Repository\OrganisateurRepository;
+use App\Service\CsvExportService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrganisateurController extends AbstractController
 {
     #[Route('/', name: 'app_organisateur_index', methods: ['GET'])]
-    public function index(OrganisateurRepository $organisateurRepository): Response
+    public function index(OrganisateurRepository $organisateurRepository,Request $request,CsvExportService $csvService): Response
     {
+        $organisateurs = $organisateurRepository->findAll();
+
+        if ($request->query->get('export') == 'csv') {
+            $response = new Response();
+            $response->headers->set('Content-type', 'text/csv');
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . "organisateur.csv" . '";');
+            $response->sendHeaders();
+
+            $response->setContent($csvService->exportOrganisateursToCsv($organisateurs));
+
+            return $response;
+        }
         return $this->render('organisateur/index.html.twig', [
-            'organisateurs' => $organisateurRepository->findAll(),
+            'organisateurs' => $organisateurs,
         ]);
     }
 
