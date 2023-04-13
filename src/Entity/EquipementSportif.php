@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\EquipementSportifRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['equipementSportif:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['equipementSportifs:read']])]
 #[Post(
+    normalizationContext: ['groups' => ['equipementSportif:read']],
+    denormalizationContext: ['groups' => ['equipementSportif:write']]
+)]
+#[Patch(
     normalizationContext: ['groups' => ['equipementSportif:read']],
     denormalizationContext: ['groups' => ['equipementSportif:write']]
 )]
