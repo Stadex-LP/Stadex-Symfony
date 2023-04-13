@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\MaterielRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,6 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['materiel:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['materiels:read']])]
 #[Post(
+    normalizationContext: ['groups' => ['materiel:read']],
+    denormalizationContext: ['groups' => ['materiel:write']]
+)]
+#[Patch(
     normalizationContext: ['groups' => ['materiel:read']],
     denormalizationContext: ['groups' => ['materiel:write']]
 )]
