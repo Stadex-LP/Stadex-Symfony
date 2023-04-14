@@ -63,6 +63,12 @@ class ManifestationController extends AbstractController
                 return true;
             });
 
+            //Set the price of the Main Oeuvre
+            $manifestation->getManifestationMainOeuvres()->forAll(function ($key, $manifestationMainOeuvre) {
+                $manifestationMainOeuvre->setPrixHoraireFact($manifestationMainOeuvre->getMainOeuvre()->getPrixHoraire());
+                return true;
+            });
+
             $manifestationRepository->save($manifestation, true);
 
             return $this->redirectToRoute('app_manifestation_index', [], Response::HTTP_SEE_OTHER);
@@ -105,6 +111,12 @@ class ManifestationController extends AbstractController
             //Set the price of the Transports
             $manifestation->getManifestationTransports()->forAll(function ($key, $manifestationTransport) {
                 $manifestationTransport->setPrixHoraireFact($manifestationTransport->getTransport()->getPrixHoraire());
+                return true;
+            });
+
+            //Set the price of the Main Oeuvre
+            $manifestation->getManifestationMainOeuvres()->forAll(function ($key, $manifestationMainOeuvre) {
+                $manifestationMainOeuvre->setPrixHoraireFact($manifestationMainOeuvre->getMainOeuvre()->getPrixHoraire());
                 return true;
             });
 

@@ -44,6 +44,13 @@ class ManifestationType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
+            ->add('manifestationMainOeuvres', CollectionType::class, [
+                'entry_type' => ManifestationMainOeuvreType::class,
+                'label' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
     }
 

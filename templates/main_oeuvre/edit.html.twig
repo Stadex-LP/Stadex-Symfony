@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Main D'Oeuvre / Modifier{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Main D'Oeuvre / Modifier</h1>
+    </div>
+    {{ include('main_oeuvre/_form.html.twig', {'button_label': 'Sauvegarder'}) }}
+{% endblock %}
