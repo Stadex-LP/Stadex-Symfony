@@ -305,6 +305,86 @@ class Manifestation
         return $prixTotal;
     }
 
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalHTMateriel(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMateriels as $manifestationMateriel) {
+            $prixTotal += $manifestationMateriel->getPrixTotalHTMateriel();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalHTTransport(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationTransports as $manifestationTransport) {
+            $prixTotal += $manifestationTransport->getPrixTotalHTTransport();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalHTMainOeuvre(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMainOeuvres as $manifestationMainOeuvre) {
+            $prixTotal += $manifestationMainOeuvre->getPrixTotalHTMainOeuvre();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalHTEquipementSportif(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationEquipementSportifs as $manifestationEquipementSportif) {
+            $prixTotal += $manifestationEquipementSportif->getPrixTotalHTEquipementSportif();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalTTCMateriel(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMateriels as $manifestationMateriel) {
+            $prixTotal += $manifestationMateriel->getPrixTotalTTCMateriel();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalTTCTransport(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationTransports as $manifestationTransport) {
+            $prixTotal += $manifestationTransport->getPrixTotalTTCTransport();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalTTCMainOeuvre(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationMainOeuvres as $manifestationMainOeuvre) {
+            $prixTotal += $manifestationMainOeuvre->getPrixTotalTTCMainOeuvre();
+        }
+        return $prixTotal;
+    }
+
+    #[Groups(['manifestation:read'])]
+    public function getPrixTotalTTCEquipementSportif(): float
+    {
+        $prixTotal = 0;
+        foreach ($this->manifestationEquipementSportifs as $manifestationEquipementSportif) {
+            $prixTotal += $manifestationEquipementSportif->getPrixTotalTTCEquipementSportif();
+        }
+        return $prixTotal;
+    }
+
     public function __toString(): string
     {
         return $this->denomination;
