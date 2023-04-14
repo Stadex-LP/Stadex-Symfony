@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Get(normalizationContext: ['groups' => ['manifestationTransport:read']])]
 #[GetCollection(normalizationContext: ['groups' => ['manifestationTransports:read']])]
 #[Post(
-    uriTemplate: '/manifestation/{id}/transports',
+    uriTemplate: '/manifestations/{id}/transports',
     uriVariables: [
         'id' => new Link(
             toProperty: 'manifestation',
