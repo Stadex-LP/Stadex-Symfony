@@ -1,4 +1,13 @@
 services:
+  react-frontend:
+    container_name: react-frontend
+    build: ../New-Stadex-React 
+    ports:
+      - "3000:3000"
+    volumes:
+      - "../New-Stadex-React:/app"
+      - "/app/node_modules"
+
   php-symfony:
     container_name: php-symfony
     build:
@@ -9,7 +18,7 @@ services:
       - postgres
     tty: true
     ports:
-      - 8000:8000
+      - 8000:80
     volumes:
       - .:/var/www/stadex-symfony
   postgres:
