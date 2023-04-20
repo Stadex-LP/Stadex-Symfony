@@ -52,17 +52,20 @@
             <div class="col">
                 <ul class="nav nav-tabs pt-3 mb-3" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Matériels</button>
+                        <button class="nav-link active" id="materiels-tab" data-bs-toggle="tab" data-bs-target="#materiels-tab-pane" type="button" role="tab" aria-controls="materiels-tab-pane" aria-selected="true">Matériels</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Équipements Sportif</button>
+                        <button class="nav-link" id="equipements-tab" data-bs-toggle="tab" data-bs-target="#equipements-tab-pane" type="button" role="tab" aria-controls="equipements-tab-pane" aria-selected="false">Équipements Sportif</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Transports</button>
+                        <button class="nav-link" id="transports-tab" data-bs-toggle="tab" data-bs-target="#transports-tab-pane" type="button" role="tab" aria-controls="transports-tab-pane" aria-selected="false">Transports</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="main-oeuvres-tab" data-bs-toggle="tab" data-bs-target="#main-oeuvres-tab-pane" type="button" role="tab" aria-controls="main-oeuvres-tab-pane" aria-selected="false">Main d'œuvres</button>
                     </li>
                 </ul>
                 <div class="tab-content mb-3" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane fade show active" id="materiels-tab-pane" role="tabpanel" aria-labelledby="materiels-tab" tabindex="0">
                         <table class="table">
                             <thead>
                             <tr>
@@ -92,7 +95,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                    <div class="tab-pane fade" id="equipements-tab-pane" role="tabpanel" aria-labelledby="equipements-tab" tabindex="0">
                         <table class="table">
                             <thead>
                             <tr>
@@ -120,7 +123,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+                    <div class="tab-pane fade" id="transports-tab-pane" role="tabpanel" aria-labelledby="transports-tab" tabindex="0">
                         <table class="table">
                             <thead>
                             <tr>
@@ -143,6 +146,34 @@
                             {% else %}
                                 <tr>
                                     <td colspan="6">Aucun Équipement Sportif</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="main-oeuvres-tab-pane" role="tabpanel" aria-labelledby="main-oeuvres-tab" tabindex="0">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Libellé</th>
+                                <th>Heure</th>
+                                <th>Prix Unitaire HT</th>
+                                <th>Prix Total HT</th>
+                                <th>Prix Total TTC</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for manifestationMainOeuvre in manifestation.manifestationMainOeuvres %}
+                                <tr>
+                                    <td>{{ manifestationMainOeuvre.mainOeuvre.categorie }}</td>
+                                    <td>{{ manifestationMainOeuvre.heure }}</td>
+                                    <td>{{ manifestationMainOeuvre.prixHoraireFact }}</td>
+                                    <td>{{ manifestationMainOeuvre.getPrixTotalHTMainOeuvre }}€</td>
+                                    <td>{{ manifestationMainOeuvre.getPrixTotalTTCMainOeuvre }}€</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6">Aucune Main d'œuvre</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
